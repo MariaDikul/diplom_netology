@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - include:
+      file: /db/changelog/tables/data.sql
+      relativeToChangeLogFile: true
+  - include:
+      file: /db/changelog/tables/user_file.sql
+      relativeToChangeLogFile: true
+  - include:
+      file: /db/changelog/tables/users.sql
+      relativeToChangeLogFile: true
+
