@@ -1,11 +1,17 @@
 databaseChangeLog:
   - include:
-      file: /db/changelog/tables/data.sql
+      file: /table/data.sql
       relativeToChangeLogFile: true
   - include:
-      file: /db/changelog/tables/user_file.sql
+      file: /table/users.sql
       relativeToChangeLogFile: true
   - include:
-      file: /db/changelog/tables/users.sql
+      file: /table/users_user_files.sql
+      relativeToChangeLogFile: true
+  - include:
+      file: /table/insert_user_one.sql
+      relativeToChangeLogFile: true
+  - include:
+      file: /table/insert_user_two.sql
       relativeToChangeLogFile: true
 

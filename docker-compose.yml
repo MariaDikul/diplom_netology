@@ -11,11 +11,11 @@ services:
     depends_on:
       - database
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/postgres
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SPRING_LIQUIBASE_URL: jdbc:postgresql://localhost:5432/postgres
+      SPRING_LIQUIBASE_URL: jdbc:postgresql://database:5432/postgres
       SPRING_LIQUIBASE_USER: postgres
       SPRING_LIQUIBASE_PASSWORD: postgres
 
@@ -27,6 +27,8 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      POSTGRES_ROOT_PASSWORD: postgres
+      POSTGRES_DATABASE: postgres
     ports:
       - "5432:5432"
 

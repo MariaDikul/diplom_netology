@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.netology.diplom.domain.DataModel;
 import ru.netology.diplom.domain.EditFileNameRequest;
+import ru.netology.diplom.domain.FileResponse;
 import ru.netology.diplom.domain.User;
 import ru.netology.diplom.exception.InputDataException;
 import ru.netology.diplom.exception.UnauthorizedException;
@@ -36,13 +37,14 @@ public class DataModelService {
         }
 
         try {
-            dataModelRepository.save(new DataModel(filename, LocalDateTime.now(), file.getSize(), file.getBytes(), user));
+            dataModelRepository.save(new DataModel(filename, LocalDateTime.now(), file.getBytes(), file.getSize(), user));
             return true;
         } catch (IOException e) {
             throw new InputDataException("uploadFile Error input data");
         }
     }
 
+    @Transactional
     public void deleteFile(String authToken, String filename) {
         final User user = getUserByAuthToken(authToken);
         if (user == null) {
@@ -85,18 +87,22 @@ public class DataModelService {
         }
     }
 
-    public List<String> getAllFiles(String authToken, Integer limit) {
+    public List<FileResponse> getAllFiles(String authToken, Integer limit) {
         final User user = getUserByAuthToken(authToken);
         if (user == null) {
             throw new UnauthorizedException("getAllFiles Unauthorized error");
         }
         return dataModelRepository.findAllByUser(user).stream()
-                .map(DataModel::getFilename)
+                .map(o -> new FileResponse(o.getFilename(), o.getSize()))
                 .collect(Collectors.toList());
     }
 
     private User getUserByAuthToken(String authToken) {
-        final String username = securityRepository.getUsernameByToken(authToken);
-        return userRepository.findByUsername(username);
+        if (authToken.startsWith("Bearer ")) {
+            final String authTokenWithoutBearer = authToken.split(" ")[1];
+            final String username = securityRepository.getUsernameByToken(authTokenWithoutBearer);
+            return userRepository.findByUsername(username);
+        }
+        return null;
     }
 }

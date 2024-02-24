@@ -4,6 +4,3 @@ create table users
     password varchar(255) not null,
     primary key (username)
 );
-
-insert into users (username, password)
-values ('anna', '444');

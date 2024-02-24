@@ -42,7 +42,7 @@ public class DataModelServiceTest {
 
     @Test
     void uploadFile() {
-        assertTrue(dataModelService.uploadFile(TOKEN_1, FILENAME_1, MULTIPART_FILE));
+        assertTrue(dataModelService.uploadFile(BEARER_TOKEN, FILENAME_1, MULTIPART_FILE));
     }
 
     @Test
@@ -52,7 +52,7 @@ public class DataModelServiceTest {
 
     @Test
     void deleteFile() {
-        dataModelService.deleteFile(TOKEN_1, FILENAME_1);
+        dataModelService.deleteFile(BEARER_TOKEN, FILENAME_1);
         Mockito.verify(dataModelRepository, Mockito.times(1)).deleteByUserAndFilename(USER_1, FILENAME_1);
     }
 
@@ -64,13 +64,13 @@ public class DataModelServiceTest {
     @Test
     void deleteFileInputDataException() {
         Mockito.when(dataModelRepository.findByUserAndFilename(USER_1, FILENAME_1)).thenReturn(DATA_MODEL_1);
-        assertThrows(InputDataException.class, () -> dataModelService.deleteFile(TOKEN_1, FILENAME_1));
+        assertThrows(InputDataException.class, () -> dataModelService.deleteFile(BEARER_TOKEN, FILENAME_1));
     }
 
     @Test
     void downloadFile() {
         Mockito.when(dataModelRepository.findByUserAndFilename(USER_1, FILENAME_1)).thenReturn(DATA_MODEL_1);
-        assertEquals(FILE_CONTENT_1, dataModelService.downloadFile(TOKEN_1, FILENAME_1));
+        assertEquals(FILE_CONTENT_1, dataModelService.downloadFile(BEARER_TOKEN, FILENAME_1));
     }
 
     @Test
@@ -82,12 +82,12 @@ public class DataModelServiceTest {
     @Test
     void downloadFileInputDataException() {
         Mockito.when(dataModelRepository.findByUserAndFilename(USER_1, FILENAME_1)).thenReturn(DATA_MODEL_1);
-        assertThrows(InputDataException.class, () -> dataModelService.downloadFile(TOKEN_1, FILENAME_2));
+        assertThrows(InputDataException.class, () -> dataModelService.downloadFile(BEARER_TOKEN, FILENAME_2));
     }
 
     @Test
     void editFileName() {
-        dataModelService.editFileName(TOKEN_1, FILENAME_1, EDIT_FILE_NAME_REQUEST);
+        dataModelService.editFileName(BEARER_TOKEN, FILENAME_1, EDIT_FILE_NAME_REQUEST);
         Mockito.verify(dataModelRepository, Mockito.times(1)).editFileNameByUser(USER_1, FILENAME_1, NEW_FILENAME);
     }
 
@@ -99,13 +99,13 @@ public class DataModelServiceTest {
     @Test
     void editFileNameInputDataException() {
         Mockito.when(dataModelRepository.findByUserAndFilename(USER_1, FILENAME_1)).thenReturn(DATA_MODEL_1);
-        assertThrows(InputDataException.class, () -> dataModelService.deleteFile(TOKEN_1, FILENAME_1));
+        assertThrows(InputDataException.class, () -> dataModelService.deleteFile(BEARER_TOKEN, FILENAME_1));
     }
 
     @Test
     void getAllFiles() {
         Mockito.when(dataModelRepository.findAllByUser(USER_1)).thenReturn(DATA_MODEL_LIST);
-        assertEquals(FILE_LIST, dataModelService.getAllFiles(TOKEN_1, LIMIT));
+        assertEquals(FILE_RS_LIST, dataModelService.getAllFiles(BEARER_TOKEN, LIMIT));
     }
 
     @Test
